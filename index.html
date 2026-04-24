@@ -693,35 +693,35 @@
 
       // Panel label
       ctx.fillStyle = isDark ? "rgba(59,125,255,0.7)" : "rgba(30,58,138,0.55)";
-      ctx.font = `700 8.5px "JetBrains Mono", monospace`;
+      ctx.font = `700 12px "JetBrains Mono", monospace`;
       ctx.textAlign = "left";
-      ctx.fillText("YOUR DEVICE", PAD + 11, PAD + 18);
+      ctx.fillText("YOUR DEVICE", PAD + 14, PAD + 22);
       ctx.strokeStyle = isDark ? "rgba(59,125,255,0.1)" : "rgba(59,125,255,0.08)";
       ctx.lineWidth = 0.5;
       ctx.beginPath();
-      ctx.moveTo(PAD + 10, PAD + 24); ctx.lineTo(PAD + PW - 10, PAD + 24);
+      ctx.moveTo(PAD + 10, PAD + 30); ctx.lineTo(PAD + PW - 10, PAD + 30);
       ctx.stroke();
 
       // Login rows
       loginRows.forEach((row, i) => {
-        const ry = PAD + 30 + i * rowH;
-        const rx = PAD + 10;
+        const ry = PAD + 36 + i * rowH;
+        const rx = PAD + 12;
         // Avatar dot
         ctx.fillStyle = row.color;
-        ctx.beginPath(); ctx.arc(rx + 6, ry + rowH / 2, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(rx + 7, ry + rowH / 2, 7, 0, Math.PI * 2); ctx.fill();
         // Site label
-        ctx.fillStyle = isDark ? "rgba(255,255,255,0.78)" : "rgba(10,10,20,0.78)";
-        ctx.font = `500 10px "Google Sans", "Archivo", sans-serif`;
+        ctx.fillStyle = isDark ? "rgba(255,255,255,0.85)" : "rgba(10,10,20,0.85)";
+        ctx.font = `600 14px "Google Sans", "Archivo", sans-serif`;
         ctx.textAlign = "left";
-        ctx.fillText(row.label, rx + 16, ry + rowH / 2 + 1);
+        ctx.fillText(row.label, rx + 20, ry + rowH / 2 - 1);
         // Username
-        ctx.fillStyle = isDark ? "rgba(255,255,255,0.34)" : "rgba(10,10,20,0.34)";
-        ctx.font = `400 8px "JetBrains Mono", monospace`;
-        ctx.fillText(row.user, rx + 16, ry + rowH / 2 + 11);
+        ctx.fillStyle = isDark ? "rgba(255,255,255,0.38)" : "rgba(10,10,20,0.38)";
+        ctx.font = `400 11px "JetBrains Mono", monospace`;
+        ctx.fillText(row.user, rx + 20, ry + rowH / 2 + 15);
         // Password dots
         ctx.fillStyle = isDark ? "rgba(255,255,255,0.28)" : "rgba(10,10,20,0.28)";
-        ctx.font = `500 9px monospace`;
-        ctx.fillText("•••••••", PAD + PW - 42, ry + rowH / 2 + 3);
+        ctx.font = `500 12px monospace`;
+        ctx.fillText("•••••••", PAD + PW - 52, ry + rowH / 2 + 5);
       });
 
       // ── CENTER: Encryption boundary ──────────────────────────────────
@@ -740,16 +740,16 @@
       ctx.setLineDash([]);
 
       // AES pill at center
-      const pW = 84, pH = 17;
+      const pW = 118, pH = 26;
       ctx.fillStyle = isDark ? "rgba(59,125,255,0.13)" : "rgba(59,125,255,0.09)";
-      ctx.beginPath(); ctx.roundRect(MID - pW / 2, H / 2 - pH / 2, pW, pH, 4); ctx.fill();
-      ctx.strokeStyle = isDark ? "rgba(59,125,255,0.28)" : "rgba(59,125,255,0.2)";
-      ctx.lineWidth = 0.8;
-      ctx.beginPath(); ctx.roundRect(MID - pW / 2, H / 2 - pH / 2, pW, pH, 4); ctx.stroke();
-      ctx.fillStyle = isDark ? "rgba(59,125,255,0.85)" : "rgba(30,58,138,0.75)";
-      ctx.font = `700 7.5px "JetBrains Mono", monospace`;
+      ctx.beginPath(); ctx.roundRect(MID - pW / 2, H / 2 - pH / 2, pW, pH, 6); ctx.fill();
+      ctx.strokeStyle = isDark ? "rgba(59,125,255,0.35)" : "rgba(59,125,255,0.25)";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(MID - pW / 2, H / 2 - pH / 2, pW, pH, 6); ctx.stroke();
+      ctx.fillStyle = isDark ? "rgba(59,125,255,0.9)" : "rgba(30,58,138,0.8)";
+      ctx.font = `700 11px "JetBrains Mono", monospace`;
       ctx.textAlign = "center";
-      ctx.fillText("AES-256-GCM", MID, H / 2 + 2.5);
+      ctx.fillText("AES-256-GCM", MID, H / 2 + 4);
 
       // ── RIGHT PANEL: Our Server ───────────────────────────────────────
       ctx.fillStyle = isDark ? "rgba(255,255,255,0.02)" : "rgba(10,10,20,0.02)";
@@ -759,38 +759,38 @@
       ctx.beginPath(); ctx.roundRect(RX, PAD, PW, H - PAD * 2, 10); ctx.stroke();
 
       ctx.fillStyle = isDark ? "rgba(255,255,255,0.28)" : "rgba(10,10,20,0.28)";
-      ctx.font = `700 8.5px "JetBrains Mono", monospace`;
+      ctx.font = `700 12px "JetBrains Mono", monospace`;
       ctx.textAlign = "left";
-      ctx.fillText("OUR SERVER", RX + 11, PAD + 18);
+      ctx.fillText("OUR SERVER", RX + 14, PAD + 22);
       ctx.strokeStyle = isDark ? "rgba(255,255,255,0.06)" : "rgba(10,10,20,0.05)";
       ctx.lineWidth = 0.5;
       ctx.beginPath();
-      ctx.moveTo(RX + 10, PAD + 24); ctx.lineTo(RX + PW - 10, PAD + 24);
+      ctx.moveTo(RX + 10, PAD + 30); ctx.lineTo(RX + PW - 10, PAD + 30);
       ctx.stroke();
 
       // Encrypted blobs — slowly shuffle hex
       serverBlobs.forEach((blob, i) => {
-        const ry = PAD + 30 + i * rowH;
-        const rx = RX + 10;
-        // Lock icon (minimal solid rect + arc)
-        ctx.fillStyle = isDark ? "rgba(255,255,255,0.18)" : "rgba(10,10,20,0.18)";
-        ctx.beginPath(); ctx.roundRect(rx + 1, ry + rowH / 2 - 3, 7, 6, 1); ctx.fill();
-        ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 1.5; ctx.lineCap = "round";
-        ctx.beginPath(); ctx.arc(rx + 4.5, ry + rowH / 2 - 3, 2.2, Math.PI, 0); ctx.stroke();
+        const ry = PAD + 36 + i * rowH;
+        const rx = RX + 12;
+        // Lock icon — scaled up
+        ctx.fillStyle = isDark ? "rgba(255,255,255,0.22)" : "rgba(10,10,20,0.22)";
+        ctx.beginPath(); ctx.roundRect(rx + 1, ry + rowH / 2 - 5, 10, 9, 2); ctx.fill();
+        ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 2; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.arc(rx + 6, ry + rowH / 2 - 5, 3.5, Math.PI, 0); ctx.stroke();
 
         // Blob text — slowly rolling hex
         const seed = (i * 31 + Math.floor(ft * 0.3)) % 16;
-        ctx.fillStyle = isDark ? "rgba(255,255,255,0.22)" : "rgba(10,10,20,0.22)";
-        ctx.font = `400 8.5px "JetBrains Mono", monospace`;
+        ctx.fillStyle = isDark ? "rgba(255,255,255,0.26)" : "rgba(10,10,20,0.26)";
+        ctx.font = `400 12px "JetBrains Mono", monospace`;
         ctx.textAlign = "left";
-        ctx.fillText(rndBlob(seed + i), rx + 14, ry + rowH / 2 + 1);
-        ctx.fillStyle = isDark ? "rgba(255,255,255,0.11)" : "rgba(10,10,20,0.11)";
-        ctx.fillText(rndBlob(seed + i + 5), rx + 14, ry + rowH / 2 + 11);
+        ctx.fillText(rndBlob(seed + i), rx + 18, ry + rowH / 2 + 2);
+        ctx.fillStyle = isDark ? "rgba(255,255,255,0.13)" : "rgba(10,10,20,0.13)";
+        ctx.fillText(rndBlob(seed + i + 5), rx + 18, ry + rowH / 2 + 16);
       });
 
-      // "NO PLAINTEXT" badge at bottom of server panel
-      ctx.fillStyle = isDark ? "rgba(255,255,255,0.2)" : "rgba(10,10,20,0.2)";
-      ctx.font = `600 7.5px "JetBrains Mono", monospace`;
+      // "NO KEY STORED" badge at bottom of server panel
+      ctx.fillStyle = isDark ? "rgba(255,255,255,0.22)" : "rgba(10,10,20,0.22)";
+      ctx.font = `600 11px "JetBrains Mono", monospace`;
       ctx.textAlign = "center";
       ctx.fillText("NO KEY STORED", RX + PW / 2, H - PAD - 10);
 
