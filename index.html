@@ -510,7 +510,7 @@
     const GRID = 18;                 // fewer dots = faster
     const AMP1 = 4, AMP2 = 2;
     const F1 = 0.022, F2 = 0.016;
-    const HOVER_R  = 130;            // tight spotlight radius (was 280)
+    const HOVER_R  = 90;             // spotlight radius
     const INNER_R  = 45;             // inner glow radius (was 90)
     let W = 0, H = 0, dots = [];
     // Use raw mouse position — no lerp lag on the primary position
@@ -560,13 +560,13 @@
       if (hasMouse) {
         const spot = ctx.createRadialGradient(smX, smY, 0, smX, smY, HOVER_R);
         if (isDark) {
-          spot.addColorStop(0,   "rgba(59,125,255,.13)");
-          spot.addColorStop(0.35,"rgba(59,125,255,.06)");
-          spot.addColorStop(0.7, "rgba(16,185,129,.03)");
+          spot.addColorStop(0,   "rgba(59,125,255,.07)");
+          spot.addColorStop(0.35,"rgba(59,125,255,.03)");
+          spot.addColorStop(0.7, "rgba(16,185,129,.015)");
           spot.addColorStop(1,   "rgba(0,0,0,0)");
         } else {
-          spot.addColorStop(0,   "rgba(30,58,138,.07)");
-          spot.addColorStop(0.4, "rgba(30,58,138,.03)");
+          spot.addColorStop(0,   "rgba(30,58,138,.04)");
+          spot.addColorStop(0.4, "rgba(30,58,138,.015)");
           spot.addColorStop(1,   "rgba(0,0,0,0)");
         }
         ctx.fillStyle = spot;
@@ -592,8 +592,8 @@
         const b = Math.round(235 + t * (129 - 235));
 
         const base  = isDark ? 0.18 : 0.10;
-        const alpha = base + bSq * 0.82 + inner * 0.38;
-        const size  = 0.9 + bSq * 3.5 + inner * 2.5;
+        const alpha = base + bSq * 0.45 + inner * 0.18;
+        const size  = 0.9 + bSq * 1.8 + inner * 1.2;
 
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
