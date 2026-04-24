@@ -426,11 +426,14 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .capture-popup .k { color:var(--text-3); }
 
 /* ── Download browser mock ───────────────────────────────────────────── */
-.dl-browser { border-radius:var(--r-xl); background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-lg); overflow:hidden; }
-.dl-browser .bar { display:flex; gap:6px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border); background:var(--surface-2); }
-.dl-browser .bar .d { width:10px; height:10px; border-radius:999px; }
+.dl-browser { border-radius:10px; background:var(--surface); border:1px solid var(--border-2); box-shadow:var(--shadow-lg); overflow:hidden; }
+.dl-browser .bar { display:flex; gap:6px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border); background:var(--surface-2); }
+.dl-browser .bar .d { width:11px; height:11px; border-radius:999px; }
 .dl-browser .bar .d:nth-child(1){background:var(--red)} .dl-browser .bar .d:nth-child(2){background:var(--yel)} .dl-browser .bar .d:nth-child(3){background:var(--grn)}
-.dl-browser .content { padding:16px; display:grid; gap:10px; }
+.dl-browser .bar .url-bar { flex:1; height:26px; margin:0 10px; background:var(--surface); border:1px solid var(--border); border-radius:5px; display:flex; align-items:center; gap:5px; padding:0 9px; font-size:12px; color:var(--text-3); overflow:hidden; }
+.dl-browser .bar .url-bar svg { flex-shrink:0; opacity:.5; }
+.dl-browser .content { padding:20px; display:grid; gap:10px; }
+.autofill-mock .field { border-radius:5px !important; }
 
 /* ── APP SHELL ───────────────────────────────────────────────────────── */
 .app-shell {
