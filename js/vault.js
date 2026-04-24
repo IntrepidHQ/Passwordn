@@ -766,6 +766,21 @@
     });
 
     // cards
+    // Click any card → open detail modal
+    document.querySelectorAll(".paycard").forEach(pc => {
+      pc.addEventListener("click", () => {
+        const c = state.data.cards.find(x => x.id === pc.dataset.cardId);
+        if (c) openCardDetailModal(c);
+      });
+      pc.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          const c = state.data.cards.find(x => x.id === pc.dataset.cardId);
+          if (c) openCardDetailModal(c);
+        }
+      });
+    });
+
     document.getElementById("reveal-cards")?.addEventListener("click", () => {
       document.querySelectorAll(".paycard").forEach(pc => {
         const c = state.data.cards.find(x => x.id === pc.dataset.cardId);
@@ -927,6 +942,83 @@
           if (!confirm(`Delete ${l.name}?`)) return;
           state.data.logins = state.data.logins.filter(x => x.id !== l.id);
           await persist(); closeModal(); toast("Deleted", "ok"); render();
+        });
+      },
+    });
+  }
+
+  function openCardDetailModal(card) {
+    const c = card;
+    const last4 = c.number.replace(/\s+/g, "").slice(-4);
+    openModal({
+      title: `${escapeHtml(c.brand)} ···· ${last4}`,
+      body: `
+        <!-- Card preview -->
+        <div style="max-width:320px;margin:0 auto 20px;">
+          ${renderPayCard(c)}
+        </div>
+        <!-- Details -->
+        <div style="display:grid;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);">
+            <span style="font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;width:80px;flex-shrink:0;">Cardholder</span>
+            <span style="font-size:13.5px;font-weight:500;">${escapeHtml(c.name)}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);">
+            <span style="font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;width:80px;flex-shrink:0;">Number</span>
+            <span id="cd-number" class="mono" style="font-size:13.5px;flex:1;">${escapeHtml(mask(c.number))}</span>
+            <button class="icon-btn" id="cd-reveal" title="Reveal and copy number" style="flex-shrink:0;">${svg("eye")}</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);">
+            <span style="font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;width:80px;flex-shrink:0;">Expires</span>
+            <span class="mono" style="font-size:13.5px;">${escapeHtml(c.exp)}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;">
+            <span style="font-size:12px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;width:80px;flex-shrink:0;">CVV</span>
+            <span id="cd-cvv" class="mono" style="font-size:13.5px;flex:1;letter-spacing:.12em;">•••</span>
+            <button class="icon-btn" id="cd-cvv-btn" title="Reveal and copy CVV" style="flex-shrink:0;">${svg("copy")}</button>
+          </div>
+        </div>`,
+      footer: `
+        <button class="btn btn-sm" id="cd-del" style="background:var(--red-bg);color:var(--red-dk);border:1px solid color-mix(in oklab,var(--red) 22%,transparent);">${svg("trash")} Delete</button>
+        <div style="flex:1"></div>
+        <button class="btn btn-ghost" data-modal-close>Close</button>
+        <button class="btn btn-primary btn-sm" id="cd-edit">${svg("edit")} Edit</button>`,
+      onMount: () => {
+        let numRevealed = false;
+
+        // Reveal + copy card number
+        document.getElementById("cd-reveal").addEventListener("click", async () => {
+          const el = document.getElementById("cd-number");
+          if (!numRevealed) {
+            el.textContent = c.number; numRevealed = true;
+            setTimeout(() => { if (el) { el.textContent = mask(c.number); numRevealed = false; } }, 8000);
+          }
+          await copyText(c.number);
+          toast("Number copied · clears in 20s", "ok");
+          setTimeout(() => navigator.clipboard.writeText("").catch(() => {}), 20000);
+        });
+
+        // Reveal + copy CVV
+        document.getElementById("cd-cvv-btn").addEventListener("click", async () => {
+          const el = document.getElementById("cd-cvv");
+          el.textContent = c.cvv;
+          setTimeout(() => { if (el) el.textContent = "•••"; }, 8000);
+          await copyText(c.cvv);
+          toast("CVV copied · clears in 20s", "ok");
+          setTimeout(() => navigator.clipboard.writeText("").catch(() => {}), 20000);
+        });
+
+        // Edit — close detail, open edit modal
+        document.getElementById("cd-edit").addEventListener("click", () => {
+          closeModal();
+          setTimeout(() => openCardModal(c), 60);
+        });
+
+        // Delete
+        document.getElementById("cd-del").addEventListener("click", async () => {
+          if (!confirm(`Delete ${escapeHtml(c.brand)} ···· ${last4}?`)) return;
+          state.data.cards = state.data.cards.filter(x => x.id !== c.id);
+          await persist(); closeModal(); toast("Card deleted", "ok"); render();
         });
       },
     });
