@@ -389,7 +389,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .showcase { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
 .showcase.reverse { direction:rtl; } .showcase.reverse > * { direction:ltr; }
 .showcase .copy h2 { margin-bottom:10px; }
-.showcase .shot { border-radius:var(--r-lg); background:var(--surface-2); border:1px solid var(--border); box-shadow:var(--shadow-lg); padding:18px; min-height:320px; position:relative; overflow:hidden; }
+.showcase .shot { border-radius:12px; background:var(--surface-2); border:1px solid var(--border); box-shadow:var(--shadow-lg); padding:18px; min-height:320px; position:relative; overflow:hidden; }
 @media(max-width:900px){ .showcase { grid-template-columns:1fr; } .showcase.reverse { direction:ltr; } }
 
 /* ── Autofill browser wrapper ────────────────────────────────────────── */
