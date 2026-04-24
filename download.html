@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Passwordn — Chrome Extension</title>
+  <meta name="description" content="Install Passwordn for Chrome — autofill, capture, and a secure vault built into your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Google+Sans:ital,opsz,wght@0,17..18,100..900;1,17..18,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E3A8A'/%3E%3Cpath d='M11 20v-6a5 5 0 1 1 10 0v6' stroke='white' stroke-width='2.2' stroke-linecap='round' fill='none'/%3E%3Crect x='9' y='14' width='14' height='10' rx='2.5' stroke='white' stroke-width='2.2' fill='none'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="js/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container">
+    <a href="index.html" class="brand" data-mark>Passwordn</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Overview</a>
+      <a class="nav-link" href="app.html">Product</a>
+      <a class="nav-link active" href="download.html">Extension</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+      <a class="nav-link" href="docs.html">Docs</a>
+    </nav>
+    <div class="row">
+      <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-sm" href="app.html">Sign in</a>
+      <a class="btn btn-primary btn-sm" href="app.html">Get started</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" style="padding-top: 60px; padding-bottom: 60px;">
+  <div class="beam beam-a"></div>
+  <div class="beam beam-b"></div>
+  <div class="container" style="position: relative; z-index: 1;">
+    <div class="dl-hero">
+      <div class="reveal">
+        <span class="eyebrow">Chrome extension · v1.0</span>
+        <h1 class="h1" style="font-size: clamp(36px, 4.5vw, 56px); margin-top: 14px;">Bring your vault into every tab.</h1>
+        <p class="lead" style="margin-top: 14px;">Autofill logins, capture new credentials as you sign up, and check card details at checkout — without ever leaving the site you're on.</p>
+
+        <div class="cta-row" style="margin-top: 24px; justify-content: flex-start;">
+          <a class="btn btn-primary btn-lg" href="passwordn-extension.zip" download id="download-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M6 9l6 6 6-6"/><path d="M4 21h16"/></svg>
+            Download for Chrome
+          </a>
+          <a class="btn btn-ghost btn-lg" href="#install">How to install</a>
+        </div>
+
+        <div class="hero-meta" style="justify-content: flex-start; margin-top: 16px;">
+          <span><span class="check">✓</span> Chrome 109+</span>
+          <span><span class="check">✓</span> Edge, Brave, Arc</span>
+          <span><span class="check">✓</span> Open source</span>
+        </div>
+      </div>
+
+      <div class="dl-browser reveal">
+        <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span>
+          <div style="margin-left:10px; font-size: 12px; color: var(--text-3); flex:1;">demo.site/signup</div>
+          <div class="pill navy" style="margin-left: auto;"><span data-mark style="line-height: 0;"></span> Passwordn</div>
+        </div>
+        <div class="content">
+          <div class="autofill-mock" style="background: transparent; border: 0; padding: 8px 0;">
+            <div class="field">
+              <span class="flabel">Email</span>
+              <span class="val">hans@passwordn.app</span>
+              <span class="autofill-suggest">Autofill</span>
+            </div>
+            <div class="field">
+              <span class="flabel">Password</span>
+              <span class="val">••••••••••••••</span>
+              <span class="caret"></span>
+              <span class="autofill-suggest" style="animation-delay: 1s">Autofill</span>
+            </div>
+          </div>
+          <div class="dl-popup" style="margin-top: 16px;">
+            <div class="hp">
+              <span data-mark></span>
+              <div style="font-weight: 700;">Save this login?</div>
+            </div>
+            <div class="bd">
+              <div class="kv"><span class="k">Site</span><span>demo.site</span></div>
+              <div class="kv"><span class="k">Email</span><span>hans@passwordn.app</span></div>
+              <div class="kv"><span class="k">Strength</span><span class="pill green"><span class="dot"></span>Strong</span></div>
+              <div style="display: flex; gap: 6px; margin-top: 4px;">
+                <button class="btn btn-primary btn-sm" style="flex:1;">Save</button>
+                <button class="btn btn-ghost btn-sm">Not now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="install" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div style="display:grid; gap: 10px; max-width: 640px; margin-bottom: 32px;" class="reveal">
+      <span class="eyebrow">Install in under a minute</span>
+      <h2 class="h2">Three steps, zero friction.</h2>
+      <p class="lead">The extension isn't in the Chrome Web Store yet (review pending). Load the unpacked build — same thing, takes 30 seconds.</p>
+    </div>
+    <div class="features">
+      <div class="feature reveal">
+        <div class="ico" style="font-weight: 700; font-size: 18px; background: color-mix(in oklab, var(--primary) 18%, transparent);">1</div>
+        <h3>Download & unzip</h3>
+        <p>Click the download button above. You'll get <span class="mono">passwordn-extension.zip</span>. Unzip it anywhere on disk.</p>
+        <a class="btn btn-soft btn-sm mt-12" href="passwordn-extension.zip" download>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 9l6 6 6-6M4 21h16"/></svg>
+          Download .zip
+        </a>
+      </div>
+      <div class="feature reveal">
+        <div class="ico" style="font-weight: 700; font-size: 18px; background: color-mix(in oklab, var(--primary) 18%, transparent);">2</div>
+        <h3>Open chrome://extensions</h3>
+        <p>Toggle <strong>Developer mode</strong> in the top right. Click <strong>Load unpacked</strong> and select the folder you unzipped.</p>
+        <button class="btn btn-soft btn-sm mt-12" onclick="navigator.clipboard.writeText('chrome://extensions'); toast && toast('Copied to clipboard','ok')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          Copy chrome://extensions
+        </button>
+      </div>
+      <div class="feature reveal">
+        <div class="ico" style="font-weight: 700; font-size: 18px; background: color-mix(in oklab, var(--primary) 18%, transparent);">3</div>
+        <h3>Create your vault</h3>
+        <p>Click the Passwordn icon in the toolbar, set a master password, and you're in. Everything syncs with the web app.</p>
+        <a class="btn btn-soft btn-sm mt-12" href="app.html">Open web vault →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="showcase">
+      <div class="copy reveal">
+        <span class="eyebrow">Inline autofill</span>
+        <h2 class="h2">A little badge. A big time-saver.</h2>
+        <p class="lead">Passwordn quietly attaches an Autofill badge to password fields on any site. Click it, pick an account, you're signed in.</p>
+        <ul style="padding:0; list-style: none; display: grid; gap: 10px; margin-top: 16px;">
+          <li class="row"><span class="pill navy"><span class="dot"></span>⌘⇧L</span> Fill without even opening the popup.</li>
+          <li class="row"><span class="pill green"><span class="dot"></span>Strict</span> Domain-locked — never fills into a lookalike.</li>
+          <li class="row"><span class="pill yellow"><span class="dot"></span>Local</span> Matching happens in your browser, not on a server.</li>
+        </ul>
+      </div>
+      <div class="shot reveal">
+        <div style="position: relative; min-height: 340px;">
+          <div class="dl-browser" style="transform: rotate(-1.5deg);">
+            <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span>
+              <div style="margin-left: 10px; font-size: 12px; color: var(--text-3);">github.com/login</div>
+            </div>
+            <div class="content">
+              <div class="autofill-mock" style="background: transparent; border: 0; padding: 0;">
+                <div class="field"><span class="flabel">Username</span><span class="val">hans@passwordn.app</span></div>
+                <div class="field"><span class="flabel">Password</span><span class="val">••••••••••••</span><span class="autofill-suggest">Autofill</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="showcase reverse">
+      <div class="copy reveal">
+        <span class="eyebrow">New password capture</span>
+        <h2 class="h2">Sign up anywhere. We take notes.</h2>
+        <p class="lead">The extension watches sign-up and password-change submissions. If it spots new credentials, it offers to save them to your vault — always with your consent.</p>
+        <div class="row mt-16">
+          <span class="pill green"><span class="dot"></span>Opt-in</span>
+          <span class="muted" style="font-size: 13px;">We never save without a confirmation tap.</span>
+        </div>
+      </div>
+      <div class="shot reveal">
+        <div style="display:grid; place-items: center; min-height: 340px;">
+          <div class="dl-popup" style="margin: 0;">
+            <div class="hp">
+              <span data-mark></span>
+              <div style="font-weight:700;">Update password for stripe.com?</div>
+            </div>
+            <div class="bd">
+              <div class="kv"><span class="k">Email</span><span>hans@passwordn.app</span></div>
+              <div class="kv"><span class="k">Old</span><span class="mono">••••••••</span></div>
+              <div class="kv"><span class="k">New</span><span class="mono">Zx!8pQ2n-KvB4m</span></div>
+              <div class="kv"><span class="k">Strength</span><span class="pill green"><span class="dot"></span>Excellent</span></div>
+              <div style="display:flex; gap: 8px; margin-top: 6px;">
+                <button class="btn btn-primary btn-sm" style="flex:1;">Update</button>
+                <button class="btn btn-ghost btn-sm">Ignore</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="reveal" style="padding: 40px; border-radius: 24px; background: linear-gradient(135deg, var(--navy-700), var(--navy-500)); color: #fff; position: relative; overflow: hidden;">
+      <div style="position:absolute; inset:0; background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 50%); pointer-events:none;"></div>
+      <div style="position:relative; display:flex; gap: 20px; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+          <h2 class="h2" style="color:#fff; margin: 0 0 6px;">Ready to install?</h2>
+          <p style="color: rgba(255,255,255,.85); margin: 0;">Grab the zip, drop it into Chrome, and stop typing passwords forever.</p>
+        </div>
+        <a class="btn btn-lg" href="passwordn-extension.zip" download style="background: white; color: var(--navy-700);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M6 9l6 6 6-6M4 21h16"/></svg>
+          Download Passwordn for Chrome
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <span data-mark></span>
+      <span>© 2026 Passwordn. Private by design.</span>
+    </div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="app.html">App</a>
+      <a href="index.html#security">Security</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/ui.js"></script>
+<script>
+  // subtle confirmation when download starts
+  document.getElementById("download-btn")?.addEventListener("click", () => {
+    setTimeout(() => window.toast && window.toast("Download started · unzip, then chrome://extensions", "ok", 3600), 200);
+  });
+</script>
+</body>
+</html>

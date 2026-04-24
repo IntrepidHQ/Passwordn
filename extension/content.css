@@ -1,0 +1,49 @@
+/* Passwordn — injected badge & picker styling. Uses shadow-safe styles. */
+.pn-badge {
+  position: absolute; z-index: 2147483646;
+  display: none; align-items: center; gap: 6px;
+  height: 28px; padding: 0 10px; border-radius: 8px;
+  background: #1E3A8A; color: #fff;
+  font: 600 12px/1 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-shadow: 0 4px 14px rgba(30,58,138,.35);
+  cursor: pointer; user-select: none;
+  transition: transform .14s ease, background .14s ease;
+}
+.pn-badge:hover { background: #17306F; transform: translateY(-1px); }
+.pn-mark { display: inline-grid; place-items: center; }
+
+.pn-picker {
+  position: absolute; z-index: 2147483647;
+  width: 300px; background: #fff; color: #0B1426;
+  border: 1px solid #E3E8F1; border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(12,20,40,.2), 0 2px 6px rgba(12,20,40,.1);
+  padding: 6px; font: 500 13px/1.4 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  animation: pn-in .16s ease;
+}
+@keyframes pn-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-color-scheme: dark) {
+  .pn-picker { background: #0F172A; color: #F4F7FD; border-color: #1F2A4A; }
+  .pn-picker .pn-u { color: #9aa6c3; }
+  .pn-picker .pn-item:hover { background: rgba(255,255,255,.06); }
+}
+
+.pn-item {
+  width: 100%; display: grid; grid-template-columns: 32px 1fr auto; gap: 10px; align-items: center;
+  padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: inherit;
+  cursor: pointer; text-align: left;
+}
+.pn-item:hover { background: rgba(30,58,138,.08); }
+.pn-fav {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: inline-grid; place-items: center;
+  background: #1E3A8A; color: #fff; font-weight: 700; font-size: 13px;
+}
+.pn-col { display: grid; gap: 2px; min-width: 0; }
+.pn-t { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pn-u { color: #6B7693; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pn-go {
+  font-size: 11px; font-weight: 700; color: #1E3A8A;
+  background: rgba(30,58,138,.12); padding: 4px 8px; border-radius: 999px;
+}
+.pn-empty { padding: 16px; color: #6B7693; text-align: center; font-size: 13px; }

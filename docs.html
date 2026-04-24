@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Passwordn — Documentation</title>
+  <meta name="description" content="Passwordn documentation: getting started, client groups, Chrome extension, REST API, MCP server, and security model." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Google+Sans:ital,opsz,wght@0,17..18,100..900;1,17..18,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E3A8A'/%3E%3Cpath d='M11 20v-6a5 5 0 1 1 10 0v6' stroke='white' stroke-width='2.2' stroke-linecap='round' fill='none'/%3E%3Crect x='9' y='14' width='14' height='10' rx='2.5' stroke='white' stroke-width='2.2' fill='none'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="js/theme.js"></script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container">
+    <a href="index.html" class="brand" data-mark>Passwordn</a>
+    <nav class="nav-links">
+      <a class="nav-link" href="index.html">Overview</a>
+      <a class="nav-link" href="app.html">Product</a>
+      <a class="nav-link" href="download.html">Extension</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+      <a class="nav-link active" href="docs.html">Docs</a>
+    </nav>
+    <div class="row">
+      <button data-theme-toggle class="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-sm" href="app.html">Sign in</a>
+      <a class="btn btn-primary btn-sm" href="app.html">Get started</a>
+    </div>
+  </div>
+</header>
+
+<section style="padding: clamp(40px,6vw,72px) 0 clamp(24px,3vw,40px); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="eyebrow reveal in">Documentation</span>
+    <h1 class="h2 reveal in" style="margin-top: 12px;">Passwordn Developer Docs</h1>
+    <p class="lead reveal in" style="margin-top: 10px;">Everything you need to integrate Passwordn into your agency workflow, automate credential access, and build on top of the API.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 40px;">
+  <div class="container">
+    <div class="docs-layout">
+
+      <!-- LEFT NAV -->
+      <nav class="docs-nav">
+        <div class="dn-section">Getting Started</div>
+        <a href="#quickstart" class="active">Quick start</a>
+        <a href="#vault">Creating a vault</a>
+        <a href="#master-password">Master password</a>
+
+        <div class="dn-section">Core Concepts</div>
+        <a href="#clients">Clients &amp; groups</a>
+        <a href="#credentials">Credentials</a>
+        <a href="#subscriptions">Subscriptions</a>
+        <a href="#catalog">Service catalog</a>
+
+        <div class="dn-section">Chrome Extension</div>
+        <a href="#extension-install">Installation</a>
+        <a href="#autofill">Autofill</a>
+        <a href="#capture">Credential capture</a>
+
+        <div class="dn-section">API Reference</div>
+        <a href="#api-auth">Authentication</a>
+        <a href="#api-clients">Clients API</a>
+        <a href="#api-credentials">Credentials API</a>
+
+        <div class="dn-section">MCP Integration</div>
+        <a href="#mcp-overview">Overview</a>
+        <a href="#mcp-setup">Setup</a>
+        <a href="#mcp-tools">Available tools</a>
+
+        <div class="dn-section">Security</div>
+        <a href="#encryption">Encryption model</a>
+        <a href="#zero-knowledge">Zero-knowledge</a>
+      </nav>
+
+      <!-- CONTENT -->
+      <div class="docs-content">
+
+        <!-- QUICK START -->
+        <div id="quickstart">
+          <h2>Quick start</h2>
+          <p>Passwordn is a zero-knowledge credential vault built for agencies. All encryption happens in your browser — we never see your master password or decrypted data.</p>
+          <ol style="padding-left: 20px; margin: 0 0 12px; display: grid; gap: 8px;">
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;">Open <a href="app.html" style="color: var(--primary); font-weight: 600;">the vault app</a> and create a master password (12+ characters recommended).</li>
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;">Create your first <strong>client</strong> — a named group for one business you manage.</li>
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;">Add credentials from the <strong>Service Catalog</strong> or manually via New Login.</li>
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;">Install the <a href="download.html" style="color: var(--primary); font-weight: 600;">Chrome extension</a> for one-click autofill on any site.</li>
+          </ol>
+        </div>
+
+        <!-- VAULT -->
+        <div id="vault">
+          <h2>Creating a vault</h2>
+          <p>On first open, Passwordn creates an encrypted vault in your browser's <code style="font-family: var(--mono); background: var(--bg-2); padding: 2px 6px; border-radius: 4px; font-size: 13px;">localStorage</code>. The vault is a JSON blob encrypted with AES-256-GCM using a key derived from your master password.</p>
+          <p>Your vault is portable — use the export function to download it as an encrypted <code style="font-family: var(--mono); background: var(--bg-2); padding: 2px 6px; border-radius: 4px; font-size: 13px;">.pn</code> file and import it on any device.</p>
+        </div>
+
+        <!-- MASTER PASSWORD -->
+        <div id="master-password">
+          <h2>Master password</h2>
+          <p>Your master password is the single key to your vault. It is never transmitted to any server. We derive your encryption key using PBKDF2-SHA256 at 600,000 iterations — matching OWASP's current recommendation for key derivation.</p>
+          <p><strong>There is no password reset.</strong> If you lose your master password, your vault data cannot be recovered. Write it down in a secure offline location.</p>
+          <div style="padding: 14px 18px; border-radius: 10px; background: var(--yel-bg); border: 1px solid color-mix(in oklab, var(--yel) 30%, transparent); font-size: 13.5px; color: var(--text-2);">
+            <strong style="color: var(--yel-dk);">⚠ Important:</strong> Use a passphrase of 4+ random words (e.g. <code style="font-family: var(--mono); font-size: 12px;">correct-horse-battery-staple</code>). At least 80 bits of entropy is strongly recommended.
+          </div>
+        </div>
+
+        <!-- CLIENTS -->
+        <div id="clients">
+          <h2>Clients &amp; groups</h2>
+          <p>A <strong>client</strong> is a named group that owns a set of credentials. Every login in your vault is assigned to a client (or kept as "Personal"). This lets you switch contexts instantly — see only Harbor Digital's accounts, or only Acme Corp's.</p>
+          <h3>Creating a client</h3>
+          <p>Go to <strong>Clients</strong> in the sidebar → click <strong>New client</strong>. Fill in the name, website, brand color, and optional plan/tier label. The color is used for the avatar icon across the vault.</p>
+          <h3>Filtering by client</h3>
+          <p>From the Clients grid, click <strong>View logins</strong> on any card to switch to the Logins view pre-filtered to that client. You can also click anywhere on the client card. Clear the filter by returning to the Clients view.</p>
+        </div>
+
+        <!-- CREDENTIALS -->
+        <div id="credentials">
+          <h2>Credentials</h2>
+          <p>Each credential stores a name, URL, username/email, and password. Passwords are scored using real entropy (not a superficial pattern check) and flagged when weak (&lt;50 bits) or stale (&gt;60 days).</p>
+          <h3>Quick-add from the catalog</h3>
+          <p>Open <strong>Service Catalog</strong>, find the service (e.g. Webflow, GitHub, n8n), and click its tile. A New Login modal pre-fills the service name and URL — just enter the username and password.</p>
+        </div>
+
+        <!-- SUBSCRIPTIONS -->
+        <div id="subscriptions">
+          <h2>Subscriptions</h2>
+          <p>The Subscriptions view tracks recurring charges. Each subscription has a name, monthly cost, category, and next renewal date. The summary cards show total monthly spend, upcoming renewals, and annual projection.</p>
+          <h3>Importing a bank statement</h3>
+          <p>Click <strong>Import statement</strong> and upload a CSV export from your bank or credit card. Passwordn will scan for recurring merchant names and suggest subscriptions to add. Statement data is processed locally and never uploaded.</p>
+          <h3>Cancelling a subscription</h3>
+          <p>Click <strong>Manage</strong> on any row to open the service's billing page directly (for services in the catalog). Click <strong>Cancel</strong> to remove it from tracking.</p>
+        </div>
+
+        <!-- CATALOG -->
+        <div id="catalog">
+          <h2>Service catalog</h2>
+          <p>The built-in catalog includes 60+ services pre-configured with brand colors, login URLs, billing management URLs, and default subscription prices. Categories include Automation, AI, Dev, Website, Hosting, Design, Comms, Email, Social, Finance, Analytics, and Security.</p>
+          <p>Services are defined in <code style="font-family: var(--mono); background: var(--bg-2); padding: 2px 6px; border-radius: 4px; font-size: 13px;">js/services.js</code>. You can fork this file to add internal tools or custom services.</p>
+        </div>
+
+        <!-- EXTENSION INSTALL -->
+        <div id="extension-install">
+          <h2>Extension installation</h2>
+          <p>The Chrome extension is not yet in the Chrome Web Store (review pending). Load it as an unpacked extension:</p>
+          <ol style="padding-left: 20px; margin: 0 0 12px; display: grid; gap: 6px;">
+            <li style="font-size: 14.5px; color: var(--text-2);">Download <a href="passwordn-extension.zip" style="color: var(--primary); font-weight: 600;">passwordn-extension.zip</a> and unzip it.</li>
+            <li style="font-size: 14.5px; color: var(--text-2);">Open <code style="font-family: var(--mono); font-size: 12px;">chrome://extensions</code>, enable <strong>Developer mode</strong>.</li>
+            <li style="font-size: 14.5px; color: var(--text-2);">Click <strong>Load unpacked</strong> and select the unzipped folder.</li>
+            <li style="font-size: 14.5px; color: var(--text-2);">Pin the Passwordn icon and open it to connect to your vault.</li>
+          </ol>
+          <p>Supported browsers: Chrome 109+, Brave, Edge, Arc.</p>
+        </div>
+
+        <!-- AUTOFILL -->
+        <div id="autofill">
+          <h2>Autofill</h2>
+          <p>The extension attaches an <strong>Autofill</strong> badge to password fields on any page. Click it to see matching credentials from your vault — filtered by the current domain.</p>
+          <p>Keyboard shortcut: <code style="font-family: var(--mono); background: var(--bg-2); padding: 2px 6px; border-radius: 4px; font-size: 13px;">⌘⇧L</code> (Mac) / <code style="font-family: var(--mono); background: var(--bg-2); padding: 2px 6px; border-radius: 4px; font-size: 13px;">Ctrl+Shift+L</code> (Windows) fills without opening the popup.</p>
+          <p>Domain matching is strict — <code style="font-family: var(--mono); font-size: 13px;">stripe.com</code> credentials will never autofill into <code style="font-family: var(--mono); font-size: 13px;">str1pe.com</code>. Matching is performed locally, before any network request.</p>
+        </div>
+
+        <!-- CAPTURE -->
+        <div id="capture">
+          <h2>Credential capture</h2>
+          <p>When you submit a login or sign-up form with new credentials, the extension detects the submission and offers to save them. You always see a confirmation prompt — nothing is saved without your explicit approval.</p>
+          <p>If a credential for that domain already exists, the extension will offer to update the password instead.</p>
+        </div>
+
+        <!-- API AUTH -->
+        <div id="api-auth">
+          <h2>API authentication</h2>
+          <p>The Passwordn REST API uses bearer token authentication. Generate an API key from <strong>Settings → API keys</strong> in the vault app (Agency and Enterprise plans).</p>
+          <div class="code-block">
+            <pre><span class="cm"># All API requests require this header</span>
+Authorization: Bearer pn_live_<span class="str">your_api_key_here</span></pre>
+          </div>
+          <p>API keys are scoped: <code style="font-family: var(--mono); font-size: 13px;">read</code>, <code style="font-family: var(--mono); font-size: 13px;">write</code>, or <code style="font-family: var(--mono); font-size: 13px;">admin</code>. Use the minimum scope required. Keys are displayed only once — store them in your own secure vault.</p>
+        </div>
+
+        <!-- API CLIENTS -->
+        <div id="api-clients">
+          <h2>Clients API</h2>
+          <div class="api-endpoint">
+            <span class="api-method get">GET</span>
+            <span class="path">/v1/clients</span>
+            <span class="ep-desc">List all clients</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method post">POST</span>
+            <span class="path">/v1/clients</span>
+            <span class="ep-desc">Create a client</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method get">GET</span>
+            <span class="path">/v1/clients/:id</span>
+            <span class="ep-desc">Get client details</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method del">DELETE</span>
+            <span class="path">/v1/clients/:id</span>
+            <span class="ep-desc">Delete client + credentials</span>
+          </div>
+          <div class="code-block" style="margin-top: 12px;">
+            <pre><span class="cm"># Example: list clients</span>
+curl https://api.passwordn.app/v1/clients \
+  -H <span class="str">"Authorization: Bearer pn_live_..."</span>
+
+<span class="cm"># Response</span>
+{
+  <span class="str">"clients"</span>: [
+    { <span class="str">"id"</span>: <span class="str">"cl_abc123"</span>, <span class="str">"name"</span>: <span class="str">"Acme Corp"</span>, <span class="str">"url"</span>: <span class="str">"acmecorp.com"</span>,
+      <span class="str">"credential_count"</span>: <span class="num">12</span>, <span class="str">"status"</span>: <span class="str">"active"</span> }
+  ]
+}</pre>
+          </div>
+        </div>
+
+        <!-- API CREDENTIALS -->
+        <div id="api-credentials">
+          <h2>Credentials API</h2>
+          <div class="api-endpoint">
+            <span class="api-method get">GET</span>
+            <span class="path">/v1/clients/:id/credentials</span>
+            <span class="ep-desc">List credentials for a client</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method post">POST</span>
+            <span class="path">/v1/clients/:id/credentials</span>
+            <span class="ep-desc">Add a credential</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method get">GET</span>
+            <span class="path">/v1/credentials/:id/reveal</span>
+            <span class="ep-desc">Decrypt &amp; return plaintext (requires write scope)</span>
+          </div>
+
+          <div style="margin-top: 14px; padding: 14px 18px; border-radius: 10px; background: var(--red-bg); border: 1px solid color-mix(in oklab, var(--red) 25%, transparent); font-size: 13.5px; color: var(--text-2);">
+            <strong style="color: var(--red-dk);">Security note:</strong> The <code style="font-family: var(--mono); font-size: 12px;">/reveal</code> endpoint decrypts credentials on the server using a session-scoped key. Use only over HTTPS, only in trusted environments, and prefer the MCP integration which avoids revealing plaintext in logs.
+          </div>
+
+          <div class="code-block" style="margin-top: 14px;">
+            <pre><span class="cm"># Get credentials for a client</span>
+curl https://api.passwordn.app/v1/clients/cl_abc123/credentials \
+  -H <span class="str">"Authorization: Bearer pn_live_..."</span>
+
+<span class="cm"># Returns masked data by default (password is not included)</span>
+{
+  <span class="str">"credentials"</span>: [
+    { <span class="str">"id"</span>: <span class="str">"cr_xyz"</span>, <span class="str">"name"</span>: <span class="str">"GitHub"</span>, <span class="str">"url"</span>: <span class="str">"github.com"</span>,
+      <span class="str">"username"</span>: <span class="str">"acme@company.com"</span>, <span class="str">"password"</span>: <span class="kw">null</span> }
+  ]
+}</pre>
+          </div>
+        </div>
+
+        <!-- MCP OVERVIEW -->
+        <div id="mcp-overview">
+          <h2>MCP overview</h2>
+          <p>Passwordn exposes a <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener" style="color: var(--primary); font-weight: 600;">Model Context Protocol</a> server so AI agents — Claude, n8n AI nodes, or any MCP-compatible client — can request credentials without the credentials ever appearing in plaintext in prompts or logs.</p>
+          <p>The MCP server acts as a secure intermediary: the agent asks for a credential by name, and the server returns it directly to the target application without exposing it to the language model's context window.</p>
+        </div>
+
+        <!-- MCP SETUP -->
+        <div id="mcp-setup">
+          <h2>MCP setup</h2>
+          <p>Add Passwordn to your Claude Desktop or MCP-compatible tool:</p>
+          <div class="code-block">
+            <pre><span class="cm"># claude_desktop_config.json</span>
+{
+  <span class="str">"mcpServers"</span>: {
+    <span class="str">"passwordn"</span>: {
+      <span class="str">"command"</span>: <span class="str">"npx"</span>,
+      <span class="str">"args"</span>: [<span class="str">"@passwordn/mcp-server"</span>],
+      <span class="str">"env"</span>: {
+        <span class="str">"PASSWORDN_API_KEY"</span>: <span class="str">"pn_live_your_key"</span>,
+        <span class="str">"PASSWORDN_VAULT_ID"</span>: <span class="str">"your_vault_id"</span>
+      }
+    }
+  }
+}</pre>
+          </div>
+          <p>Or use the hosted endpoint — no local install required (Agency and Enterprise plans):</p>
+          <div class="code-block">
+            <pre><span class="str">"url"</span>: <span class="str">"https://mcp.passwordn.app/v1"</span>,
+<span class="str">"headers"</span>: { <span class="str">"Authorization"</span>: <span class="str">"Bearer pn_live_..."</span> }</pre>
+          </div>
+        </div>
+
+        <!-- MCP TOOLS -->
+        <div id="mcp-tools">
+          <h2>MCP tools</h2>
+          <p>Once connected, the following tools are available to your AI agent:</p>
+
+          <div style="display: grid; gap: 10px; margin: 12px 0;">
+            <div class="api-endpoint" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+              <div class="row gap-8"><span class="api-method get">TOOL</span><span class="path">get_credential</span></div>
+              <p style="font-size: 13px; color: var(--text-2); margin: 0;">Returns username and password for a named credential. Params: <code style="font-family: var(--mono); font-size: 12px;">client_name</code>, <code style="font-family: var(--mono); font-size: 12px;">service_name</code></p>
+            </div>
+            <div class="api-endpoint" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+              <div class="row gap-8"><span class="api-method get">TOOL</span><span class="path">list_clients</span></div>
+              <p style="font-size: 13px; color: var(--text-2); margin: 0;">Returns the list of clients in the vault with credential counts.</p>
+            </div>
+            <div class="api-endpoint" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+              <div class="row gap-8"><span class="api-method post">TOOL</span><span class="path">save_credential</span></div>
+              <p style="font-size: 13px; color: var(--text-2); margin: 0;">Saves a new credential to the vault. Params: <code style="font-family: var(--mono); font-size: 12px;">client_name</code>, <code style="font-family: var(--mono); font-size: 12px;">service</code>, <code style="font-family: var(--mono); font-size: 12px;">username</code>, <code style="font-family: var(--mono); font-size: 12px;">password</code></p>
+            </div>
+            <div class="api-endpoint" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+              <div class="row gap-8"><span class="api-method get">TOOL</span><span class="path">check_health</span></div>
+              <p style="font-size: 13px; color: var(--text-2); margin: 0;">Returns vault stats: total clients, credentials, and weak/stale counts.</p>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <pre><span class="cm"># Example agent prompt using Passwordn MCP</span>
+<span class="str">"Log into Acme Corp's Squarespace account and update
+the homepage hero image. Use their credentials from
+my Passwordn vault."</span>
+
+<span class="cm"># Claude calls: get_credential(client_name="Acme Corp",</span>
+<span class="cm">#                              service_name="Squarespace")</span>
+<span class="cm"># Returns credentials directly to the tool — never to the prompt</span></pre>
+          </div>
+        </div>
+
+        <!-- ENCRYPTION -->
+        <div id="encryption">
+          <h2>Encryption model</h2>
+          <p>Passwordn uses a layered encryption approach:</p>
+          <ol style="padding-left: 20px; margin: 0 0 12px; display: grid; gap: 8px;">
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;"><strong>Key derivation</strong> — PBKDF2-SHA256, 600,000 iterations, 16-byte random salt. The derived key is 256 bits.</li>
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;"><strong>Vault encryption</strong> — AES-256-GCM with a 96-bit random IV per encryption operation. The GCM tag authenticates the ciphertext, preventing silent tampering.</li>
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;"><strong>Auth check</strong> — A separate small payload is encrypted with the same key; decrypting it validates the password before attempting to decrypt the full vault blob.</li>
+            <li style="font-size: 14.5px; color: var(--text-2); line-height: 1.7;"><strong>Session key</strong> — The derived key exists only in memory during the session. On lock or tab close, the key is discarded.</li>
+          </ol>
+          <div class="code-block">
+            <pre><span class="cm">// Vault schema (stored in localStorage)</span>
+{
+  <span class="str">"v"</span>: <span class="num">1</span>,                          <span class="cm">// schema version</span>
+  <span class="str">"salt"</span>: <span class="str">"base64..."</span>,             <span class="cm">// 16-byte PBKDF2 salt</span>
+  <span class="str">"iters"</span>: <span class="num">600000</span>,               <span class="cm">// PBKDF2 iterations</span>
+  <span class="str">"auth"</span>: { <span class="str">"iv"</span>: <span class="str">"..."</span>, <span class="str">"ct"</span>: <span class="str">"..."</span> },  <span class="cm">// auth check blob</span>
+  <span class="str">"blob"</span>: { <span class="str">"iv"</span>: <span class="str">"..."</span>, <span class="str">"ct"</span>: <span class="str">"..."</span> }   <span class="cm">// encrypted vault data</span>
+}</pre>
+          </div>
+        </div>
+
+        <!-- ZERO KNOWLEDGE -->
+        <div id="zero-knowledge">
+          <h2>Zero-knowledge architecture</h2>
+          <p>Passwordn is zero-knowledge: the server stores only ciphertext. We cannot decrypt your vault. Here is what we do and don't see:</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+            <div style="padding: 16px; border-radius: 12px; background: var(--grn-bg); border: 1px solid color-mix(in oklab, var(--grn) 22%, transparent);">
+              <h3 style="font-size: 14px; color: var(--grn-dk); margin: 0 0 10px;">✓ What we see</h3>
+              <ul style="padding-left: 18px; margin: 0; display: grid; gap: 6px;">
+                <li style="font-size: 13px; color: var(--text-2);">Encrypted vault blob (ciphertext)</li>
+                <li style="font-size: 13px; color: var(--text-2);">Vault metadata (creation date, size)</li>
+                <li style="font-size: 13px; color: var(--text-2);">Your email address (for account)</li>
+                <li style="font-size: 13px; color: var(--text-2);">API key usage logs (no payload)</li>
+              </ul>
+            </div>
+            <div style="padding: 16px; border-radius: 12px; background: var(--red-bg); border: 1px solid color-mix(in oklab, var(--red) 22%, transparent);">
+              <h3 style="font-size: 14px; color: var(--red-dk); margin: 0 0 10px;">✗ What we never see</h3>
+              <ul style="padding-left: 18px; margin: 0; display: grid; gap: 6px;">
+                <li style="font-size: 13px; color: var(--text-2);">Your master password</li>
+                <li style="font-size: 13px; color: var(--text-2);">Derived encryption key</li>
+                <li style="font-size: 13px; color: var(--text-2);">Decrypted credentials</li>
+                <li style="font-size: 13px; color: var(--text-2);">Client names or URLs</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>This means we cannot help you recover a lost master password. It also means a breach of our servers exposes nothing — an attacker would need your master password plus the ciphertext to decrypt anything.</p>
+        </div>
+
+      </div><!-- /docs-content -->
+    </div><!-- /docs-layout -->
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <span data-mark></span>
+      <span>© 2026 Passwordn. Private by design.</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="app.html">App</a>
+      <a href="download.html">Extension</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="docs.html">Docs</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/ui.js"></script>
+<script>
+  // Highlight active doc section on scroll
+  (function () {
+    const links = document.querySelectorAll(".docs-nav a[href^='#']");
+    const sections = [...links].map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove("active"));
+          const a = document.querySelector(`.docs-nav a[href="#${e.target.id}"]`);
+          if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-30% 0px -65% 0px" });
+    sections.forEach(s => io.observe(s));
+  })();
+</script>
+</body>
+</html>
