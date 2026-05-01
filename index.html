@@ -42,7 +42,7 @@
   <canvas id="hero-gl" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;" aria-hidden="true"></canvas>
 
   <div class="container hero-inner">
-    <span class="eyebrow reveal in" style="justify-self:start;width:fit-content;"><span class="dot" style="color: var(--grn)"></span> Built for digital agencies · Zero-knowledge encryption</span>
+    <span class="eyebrow reveal in" style="justify-self:start;width:fit-content;"><span class="dot" style="color: var(--grn)"></span> Built for agencies · Zero-knowledge</span>
     <h1 class="h1 reveal in">
       Every client's credentials,<br/><span class="grad-text">secured at scale.</span>
     </h1>
@@ -459,7 +459,7 @@
   <div class="container">
     <div class="reveal" style="padding: 48px; border-radius: 24px; background: linear-gradient(135deg, var(--navy-700), var(--navy-500)); color: #fff; position: relative; overflow: hidden; box-shadow: var(--shadow-lg);">
       <div style="position: absolute; inset: 0; background: radial-gradient(circle at 80% 20%, rgba(255,255,255,.15), transparent 50%); pointer-events: none;"></div>
-      <div style="position: relative; display: grid; gap: 18px; grid-template-columns: 1.4fr 1fr; align-items: center;">
+      <div class="cta-inner-grid" style="position: relative; display: grid; gap: 18px; align-items: center;">
         <div>
           <h2 class="h2" style="color: white;">Start managing credentials the&nbsp;right&nbsp;way.</h2>
           <p style="color: rgba(255,255,255,.85); font-size: 18px; margin: 10px 0 0;">Free to start. Built to scale with your agency. Upgrade for API access, team seats, and white-label.</p>
@@ -510,8 +510,8 @@
     const GRID = 18;                 // fewer dots = faster
     const AMP1 = 4, AMP2 = 2;
     const F1 = 0.022, F2 = 0.016;
-    const HOVER_R  = 90;             // spotlight radius
-    const INNER_R  = 45;             // inner glow radius (was 90)
+    const HOVER_R  = 55;             // spotlight radius
+    const INNER_R  = 22;             // inner glow radius
     let W = 0, H = 0, dots = [];
     // Use raw mouse position — no lerp lag on the primary position
     let mouseX = -9999, mouseY = -9999;
@@ -560,13 +560,12 @@
       if (hasMouse) {
         const spot = ctx.createRadialGradient(smX, smY, 0, smX, smY, HOVER_R);
         if (isDark) {
-          spot.addColorStop(0,   "rgba(59,125,255,.07)");
-          spot.addColorStop(0.35,"rgba(59,125,255,.03)");
-          spot.addColorStop(0.7, "rgba(16,185,129,.015)");
+          spot.addColorStop(0,   "rgba(59,125,255,.04)");
+          spot.addColorStop(0.4, "rgba(59,125,255,.015)");
           spot.addColorStop(1,   "rgba(0,0,0,0)");
         } else {
-          spot.addColorStop(0,   "rgba(30,58,138,.04)");
-          spot.addColorStop(0.4, "rgba(30,58,138,.015)");
+          spot.addColorStop(0,   "rgba(30,58,138,.025)");
+          spot.addColorStop(0.5, "rgba(30,58,138,.008)");
           spot.addColorStop(1,   "rgba(0,0,0,0)");
         }
         ctx.fillStyle = spot;
@@ -591,9 +590,9 @@
         const g = Math.round(99  + t * (185 - 99));
         const b = Math.round(235 + t * (129 - 235));
 
-        const base  = isDark ? 0.18 : 0.10;
-        const alpha = base + bSq * 0.45 + inner * 0.18;
-        const size  = 0.9 + bSq * 1.8 + inner * 1.2;
+        const base  = isDark ? 0.13 : 0.07;
+        const alpha = base + bSq * 0.25 + inner * 0.10;
+        const size  = 0.6 + bSq * 1.0 + inner * 0.7;
 
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);

@@ -863,6 +863,13 @@ footer .container { display:flex; justify-content:space-between; align-items:cen
 /* ── CTA row ─────────────────────────────────────────────────────────── */
 .cta-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
 
+/* ── CTA section inner grid ──────────────────────────────────────────── */
+.cta-inner-grid { grid-template-columns: 1.4fr 1fr; }
+@media(max-width:768px) {
+  .cta-inner-grid { grid-template-columns: 1fr; }
+  .cta-inner-grid > div:last-child { justify-content: flex-start; }
+}
+
 /* ── Company logo images (Clearbit) ──────────────────────────────────── */
 .logo-img {
   width:100%; height:100%; display:block;
