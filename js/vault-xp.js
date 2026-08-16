@@ -39,11 +39,11 @@
 
   // ── Particle model ───────────────────────────────────────────────────────
   // Groups: 0 wallFace, 1 doorDisc, 2 wheel, 3 bolts, 4 interior, 5 handles
-  const P = { x: [], y: [], z: [], sx: [], sy: [], sz: [], g: [], c: [], st: [] };
+  const P = { x: [], y: [], z: [], sx: [], sy: [], sz: [], g: [], c: [], st: [], m: [] };
   let N = 0;
   const rand = (a, b) => a + Math.random() * (b - a);
 
-  function add(x, y, z, g, c) {
+  function add(x, y, z, g, c, m = 1) {
     const R = 46;
     P.x.push(x); P.y.push(y); P.z.push(z);
     const th = rand(0, Math.PI * 2), ph = Math.acos(rand(-1, 1));
@@ -52,6 +52,7 @@
     P.sz.push(Math.cos(ph) * R * 0.6 - 6);
     P.g.push(g); P.c.push(c);
     P.st.push(rand(0, 0.55));
+    P.m.push(m);
     N++;
   }
 
@@ -72,33 +73,79 @@
   }
 
   function build() {
-    // 1. Door disc — dense concentric rings, z=0
-    for (let r = 0.55; r <= 8.4; r += 0.30 / DENSITY * (DENSITY < 1 ? 1.35 : 1)) {
-      ringPoints(r, 0.30 / DENSITY, (x, y) => {
-        add(x, y, rand(-0.05, 0.05), 1, Math.random() < 0.16 ? 1 : 0);
+    // 1. Door disc — convex dome: ring spacing tightens and dot size grows
+    //    toward the rim, center bulges toward the viewer
+    let r = 0.55;
+    while (r <= 8.4) {
+      const f = r / 8.4;                       // 0 center → 1 rim
+      const domeZ = -0.28 * (1 - f * f);       // bulge toward camera
+      const m = 0.82 + 0.42 * f;               // rim dots read bigger/closer
+      ringPoints(r, (0.34 - 0.10 * f) / DENSITY, (x, y) => {
+        add(x, y, domeZ + rand(-0.04, 0.04), 1, Math.random() < 0.16 ? 1 : 0, m);
       });
+      r += (0.36 - 0.11 * f) / DENSITY * (DENSITY < 1 ? 1.35 : 1);
     }
-    for (const r of [8.7, 8.95, 9.2]) {
-      ringPoints(r, 0.22 / DENSITY, (x, y) => add(x, y, rand(-0.2, 0.2), 1, 1));
+    for (const rr of [8.7, 8.95, 9.2]) {
+      ringPoints(rr, 0.20 / DENSITY, (x, y) => add(x, y, rand(-0.15, 0.15), 1, 1, 1.28));
     }
-    // 2. Wheel — hub, 4 spokes, outer ring; proud of the door face
-    ringPoints(1.15, 0.20, (x, y) => add(x, y, -0.65, 2, 1));
-    ringPoints(5.6, 0.20 / DENSITY, (x, y) => add(x, y, -0.65, 2, 1));
-    ringPoints(5.85, 0.22 / DENSITY, (x, y) => add(x, y, -0.65, 2, 0));
-    for (let arm = 0; arm < 4; arm++) {
-      const a = arm * (Math.PI / 2);
-      for (let t = 1.2; t <= 5.55; t += 0.17) {
-        for (const off of [-0.14, 0.14]) {
-          add(Math.cos(a) * t - Math.sin(a) * off, Math.sin(a) * t + Math.cos(a) * off, -0.7, 2, 1);
+    // 2. Wheel — real vault mechanism: hub cap, 8 spokes passing THROUGH the
+    //    rim into handle grips (ship's-wheel style), dotted rim bolts.
+    //    The whole group spins as one unit.
+    const WZ = -0.7;
+    for (const [r, st] of [[0.35, 0.12], [0.7, 0.13], [1.05, 0.14], [1.35, 0.15]]) {
+      ringPoints(r, st, (x, y) => add(x, y, WZ - 0.06, 2, 1, 1.22));
+    }
+    ringPoints(5.45, 0.16 / DENSITY, (x, y) => add(x, y, WZ, 2, 1, 1.12));
+    ringPoints(5.75, 0.16 / DENSITY, (x, y) => add(x, y, WZ, 2, 0, 1.12));
+    for (let d = 0; d < 16; d++) {
+      const a = (d / 16) * Math.PI * 2 + Math.PI / 16;
+      add(Math.cos(a) * 5.6, Math.sin(a) * 5.6, WZ - 0.08, 2, 2, 1.3);
+    }
+    for (let arm = 0; arm < 8; arm++) {
+      const a = arm * (Math.PI / 4);
+      const ca = Math.cos(a), sa = Math.sin(a);
+      for (let t = 1.35; t <= 6.9; t += 0.15) {
+        for (const off of [-0.13, 0.13]) {
+          add(ca * t - sa * off, sa * t + ca * off, WZ, 2, 1, 1.08);
         }
       }
-      add(Math.cos(a) * 6.35, Math.sin(a) * 6.35, -0.75, 2, 2);
+      // handle grip: dense capsule beyond the rim + accent tip
+      for (let t = 6.9; t <= 7.7; t += 0.11) {
+        for (const off of [-0.24, -0.08, 0.08, 0.24]) {
+          add(ca * t - sa * off, sa * t + ca * off, WZ - 0.04, 2, 0, 1.42);
+        }
+      }
+      add(ca * 7.85, sa * 7.85, WZ - 0.05, 2, 2, 1.5);
     }
-    // 3. Bolts around the frame
-    for (let b = 0; b < 12; b++) {
-      const a = (b / 12) * Math.PI * 2 + Math.PI / 12;
-      const bx = Math.cos(a) * 7.5, by = Math.sin(a) * 7.5;
-      ringPoints(0.28, 0.14, (x, y) => add(bx + x, by + y, -0.15, 3, 2));
+    // 6. Collar — the ringed mounting plate the wheel spins inside (door-fixed)
+    ringPoints(6.15, 0.15 / DENSITY, (x, y) => add(x, y, -0.32, 6, 0, 1.05));
+    ringPoints(6.4,  0.15 / DENSITY, (x, y) => add(x, y, -0.32, 6, 1, 1.05));
+    for (let d = 0; d < 16; d++) {
+      const a = (d / 16) * Math.PI * 2;
+      add(Math.cos(a) * 6.28, Math.sin(a) * 6.28, -0.36, 6, 2, 1.18);
+    }
+    // 7. Bolt-work — four diagonal rods running from the collar to the door
+    //    edge, ending in bolt blocks that protrude into the frame while
+    //    locked and RETRACT inward as the wheel spins (the unlock).
+    for (let arm = 0; arm < 4; arm++) {
+      const a = Math.PI / 4 + arm * (Math.PI / 2);
+      const ca = Math.cos(a), sa = Math.sin(a);
+      for (let t = 6.5; t <= 8.3; t += 0.14) {
+        for (const off of [-0.1, 0.1]) {
+          add(ca * t - sa * off, sa * t + ca * off, -0.45, 7, 1, 1.05);
+        }
+      }
+      for (let t = 8.3; t <= 9.4; t += 0.12) {
+        for (const off of [-0.34, -0.17, 0, 0.17, 0.34]) {
+          add(ca * t - sa * off, sa * t + ca * off, -0.4, 7, 0, 1.3);
+        }
+      }
+    }
+    // 3. Door rivets — dotted ring around the door face
+    for (let b = 0; b < 18; b++) {
+      const a = (b / 18) * Math.PI * 2 + Math.PI / 18;
+      const bx = Math.cos(a) * 8.15, by = Math.sin(a) * 8.15;
+      ringPoints(0.2, 0.12, (x, y) => add(bx + x, by + y, -0.12, 3, 2, 1.15));
     }
     // 4. Front wall — full-bleed around the door
     const stepW = 0.60 / DENSITY;
@@ -107,7 +154,7 @@
         const d = Math.hypot(x, y);
         if (d < 9.9) continue;
         if (Math.random() < 0.45) continue;
-        add(x + rand(-0.1, 0.1), y + rand(-0.1, 0.1), 0.55, 0, 0);
+        add(x + rand(-0.1, 0.1), y + rand(-0.1, 0.1), 0.55, 0, 0, 0.8);
       }
     }
     // 5. Interior — deposit-box walls + explicit room edges so the three walls read as one room
@@ -123,8 +170,8 @@
           const z0 = 2.2 + zi * 3.4;
           const y0 = -6.1 + yi * 2.55;
           boxOutline((u, v) => add(X, y0 + v, z0 + u, 4, 0), 2.9, 2.1);
-          add(X, y0 + 1.05, z0 + 2.35, 5, 2);
-          add(X, y0 + 1.05, z0 + 2.62, 5, 2);
+          add(X, y0 + 1.05, z0 + 2.35, 5, 2, 1.35);
+          add(X, y0 + 1.05, z0 + 2.62, 5, 2, 1.35);
           ringPoints(0.16, 0.09, (a, b) => add(X, y0 + 1.05 + b, z0 + 2.48 + a, 5, 2));
         }
       }
@@ -167,6 +214,7 @@
   const TX = Float32Array.from(P.x), TY = Float32Array.from(P.y), TZ = Float32Array.from(P.z);
   const SX = Float32Array.from(P.sx), SY = Float32Array.from(P.sy), SZ = Float32Array.from(P.sz);
   const G = Uint8Array.from(P.g), C = Uint8Array.from(P.c), ST = Float32Array.from(P.st);
+  const SM = Float32Array.from(P.m);
 
   // ── Canvas sizing ────────────────────────────────────────────────────────
   let W = 0, H = 0, DPR = 1;
@@ -237,7 +285,14 @@
         x = rx * cw - ry * sw;
         y = rx * sw + ry * cw;
       }
-      if ((g === 1 || g === 2 || g === 3) && openP > 0) {
+      if (g === 7 && spinP > 0) {
+        // bolt-work slides toward the hub as the wheel turns — the unlock
+        const len = Math.hypot(TX[i], TY[i]) || 1;
+        const pull = 1.05 * spinP;
+        x -= (TX[i] / len) * pull;
+        y -= (TY[i] / len) * pull;
+      }
+      if ((g === 1 || g === 2 || g === 3 || g === 6 || g === 7) && openP > 0) {
         const dx = x - hingeX;
         x = hingeX + dx * cosA;
         z = z - dx * sinA;
@@ -258,15 +313,14 @@
       const py = cy + w.y * s;
       if (px < -8 || px > W + 8 || py < -8 || py > H + 8) return;
       const g = G[i];
-      let size = s * 0.048;
-      if (g === 2) size = s * 0.068;
-      if (g === 5) size = s * 0.078;
-      if (size > 2.6) size = 2.6;
-      if (size < 0.5) size = 0.5;
-      // lighter, uniform alpha — overlapping dots stack up to model the form
-      let a = (1.45 - dz * 0.024) * globalAlpha * (0.22 + 0.78 * w.e) * 0.82;
+      let size = s * 0.048 * SM[i] * (g === 5 ? 1.25 : 1);
+      if (size > 3.4) size = 3.4;
+      if (size < 0.45) size = 0.45;
+      // lighter, uniform alpha — overlaps stack up to model the form;
+      // bigger (closer) dots are slightly more opaque for depth
+      let a = (1.45 - dz * 0.024) * globalAlpha * (0.22 + 0.78 * w.e) * (0.68 + 0.13 * Math.min(size, 2));
       if (a <= 0.02) return;
-      if (a > 0.9) a = 0.9;
+      if (a > 0.92) a = 0.92;
       ctx.globalAlpha = a;
       ctx.fillStyle = LUT[C[i]];
       ctx.fillRect(px - size / 2, py - size / 2, size, size);
