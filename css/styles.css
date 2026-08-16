@@ -1044,13 +1044,13 @@ footer .links a:hover { color:var(--text); }
 .vx-cards {
   position: absolute; inset: 0;
   pointer-events: none;
-  perspective: 1100px;
-  perspective-origin: 50% 46%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
 }
 .vx-card {
   position: absolute;
-  width: clamp(180px, 22vw, 280px);
-  padding: 18px 20px;
+  width: clamp(230px, 25vw, 340px);
+  padding: 22px 24px;
   border-radius: var(--r-lg);
   background: var(--card-glass);
   border: 1px solid var(--border-2);
@@ -1060,33 +1060,43 @@ footer .links a:hover { color:var(--text); }
   opacity: 0;
   visibility: hidden;
   will-change: opacity, transform;
+  cursor: pointer;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
 }
-.vx-card h3 { font-family: var(--font-heading); font-size: 17px; margin: 0 0 6px; color: var(--text); }
-.vx-card p  { font-size: 13.5px; line-height: 1.5; color: var(--text-2); margin: 0; }
+.vx-card h3 { font-family: var(--font-heading); font-size: 19px; margin: 0 0 7px; color: var(--text); }
+.vx-card p  { font-size: 14.5px; line-height: 1.55; color: var(--text-2); margin: 0; }
 
-/* left wall — rotated into the scene like the deposit-box wall */
-.vx-left  { left: 3vw;  transform: rotateY(38deg); transform-origin: left center; }
-.vx-l1 { top: 22vh; }
-.vx-l2 { top: 56vh; }
+/* left wall — rotated to match the wall's vanishing lines */
+.vx-left  { left: 3.5vw;  transform: rotateY(46deg); transform-origin: left center; }
+.vx-l1 { top: 19vh; }
+.vx-l2 { top: 55vh; }
 /* right wall */
-.vx-right { right: 3vw; transform: rotateY(-38deg); transform-origin: right center; }
-.vx-r1 { top: 22vh; }
-.vx-r2 { top: 56vh; }
-/* center / back wall */
-.vx-center { left: 50%; transform: translateX(-50%); }
-.vx-c1 { top: 16vh; }
-.vx-c2 { top: 64vh; }
+.vx-right { right: 3.5vw; transform: rotateY(-46deg); transform-origin: right center; }
+.vx-r1 { top: 19vh; }
+.vx-r2 { top: 55vh; }
+/* back wall — flat but scaled down + tucked inside the back-wall grid */
+.vx-center { left: 50%; transform: translateX(-50%) scale(.86); width: clamp(220px, 22vw, 300px); }
+.vx-c1 { top: 23vh; }
+.vx-c2 { top: 56vh; }
+
+/* tap/click to straighten a card for reading */
+.vx-card.vx-flat { z-index: 6; box-shadow: var(--shadow-xl); }
+.vx-left.vx-flat  { transform: rotateY(0deg); }
+.vx-right.vx-flat { transform: rotateY(0deg); }
+.vx-center.vx-flat { transform: translateX(-50%) scale(1); }
 
 @media (max-width: 719px) {
-  .vx-card { width: clamp(150px, 44vw, 220px); padding: 14px 15px; }
-  .vx-card h3 { font-size: 15px; }
-  .vx-card p { font-size: 12px; }
-  .vx-left  { left: 2vw;  transform: rotateY(30deg); }
-  .vx-right { right: 2vw; transform: rotateY(-30deg); }
-  .vx-l1, .vx-r1 { top: 14vh; }
-  .vx-l2, .vx-r2 { top: 66vh; }
+  .vx-card { width: clamp(160px, 45vw, 230px); padding: 15px 16px; }
+  .vx-card h3 { font-size: 15.5px; }
+  .vx-card p { font-size: 12.5px; }
+  .vx-left  { left: 2vw;  transform: rotateY(34deg); }
+  .vx-right { right: 2vw; transform: rotateY(-34deg); }
+  .vx-l1, .vx-r1 { top: 13vh; }
+  .vx-l2, .vx-r2 { top: 64vh; }
+  .vx-center { transform: translateX(-50%) scale(.9); }
   .vx-c1 { top: 38vh; }
   .vx-c2 { display: none; }
+  .vx-center.vx-flat { transform: translateX(-50%) scale(1); }
 }
 
 /* Static mode (?vault=view / reduced motion): single screenful, no pin */
@@ -1099,4 +1109,37 @@ footer .links a:hover { color:var(--text); }
     color-mix(in oklab, var(--bg) 86%, transparent) 0%,
     color-mix(in oklab, var(--bg) 55%, transparent) 55%,
     transparent 75%);
+}
+
+
+/* ── #features deposit-box doors (opened by scroll) ─────────────────── */
+#features .features { perspective: 1300px; }
+.fbox { position: relative; }
+.fbox-door {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background-color: var(--surface-3);
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--text-3) 55%, transparent) 1px, transparent 1.4px);
+  background-size: 9px 9px;
+  border: 1px solid var(--border-2);
+  box-shadow: var(--shadow-sm);
+  transform-origin: left center;
+  backface-visibility: hidden;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 2;
+}
+.fbox-lock {
+  position: absolute; top: 50%; right: 18%;
+  width: 22px; height: 22px;
+  transform: translateY(-50%);
+  border: 2px dotted var(--grn-dk);
+  border-radius: 50%;
+}
+.fbox-handle {
+  position: absolute; top: 50%; right: 18%;
+  width: 34px; height: 4px;
+  transform: translate(46px, -50%);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--text-3) 55%, transparent);
 }
