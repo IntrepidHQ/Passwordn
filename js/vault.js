@@ -125,6 +125,10 @@
     vault.blob = await Crypto.encrypt(state.data, state.key);
     vault.updatedAt = Date.now();
     saveVault(vault);
+    // Cloud: push the fresh ciphertext envelope in the background if signed in
+    if (window.PasswordnCloud?.isAuthed()) {
+      PasswordnCloud.pushVault(vault).catch(() => { /* offline is fine */ });
+    }
   }
 
   function lock() {
@@ -663,7 +667,89 @@
           ${secBlock("warn",   "Stale passwords",  old,    "Unchanged 60+ days. Rotate high-value accounts regularly.")}
           ${secBlock("danger", "Reused passwords", reused, "One breach compromises all accounts sharing this password.")}
         </div>
+      </div>
+      ${cloudPanel()}`;
+  }
+
+  // ── Cloud sync panel (zero-knowledge: only ciphertext leaves the device) ──
+  function cloudPanel() {
+    if (!window.PasswordnCloud) return "";
+    const authed = PasswordnCloud.isAuthed();
+    return `
+      <div class="panel" style="margin-top:16px;">
+        <div class="ph"><h3>Cloud sync</h3><span class="pill ${authed ? "green" : "yellow"}"><span class="dot"></span>${authed ? "Connected" : "Off"}</span></div>
+        <div style="padding:16px;display:grid;gap:12px;max-width:460px;">
+          <p class="muted" style="font-size:13px;margin:0;">
+            Sync your encrypted vault between devices. Only ciphertext leaves this device —
+            your master password never does.
+          </p>
+          ${authed ? `
+            <div class="row gap-8">
+              <button class="btn btn-primary btn-sm" id="cloud-sync-now">Sync now</button>
+              <button class="btn btn-soft btn-sm" id="cloud-signout">Sign out</button>
+            </div>
+          ` : `
+            <input class="input" id="cloud-email" type="email" placeholder="you@agency.com" autocomplete="email" />
+            <input class="input" id="cloud-pass" type="password" placeholder="Account password (not your master password)" autocomplete="current-password" />
+            <div class="row gap-8">
+              <button class="btn btn-primary btn-sm" id="cloud-signin">Sign in</button>
+              <button class="btn btn-soft btn-sm" id="cloud-signup">Create account</button>
+            </div>
+          `}
+          <span class="muted" id="cloud-status" style="font-size:12.5px;"></span>
+        </div>
       </div>`;
+  }
+
+  function bindCloudEvents() {
+    if (!window.PasswordnCloud) return;
+    const statusEl = () => document.getElementById("cloud-status");
+    const say = (m) => { const el = statusEl(); if (el) el.textContent = m; };
+    const creds = () => ({
+      email: document.getElementById("cloud-email")?.value.trim(),
+      pass:  document.getElementById("cloud-pass")?.value,
+    });
+    const afterSync = (r) => {
+      if (r.status === "pulled") {
+        lock();
+        toast("Vault updated from cloud — unlock to load it", "warn");
+      } else if (r.status === "pushed") { say("Local vault pushed to cloud."); toast("Synced to cloud", "ok"); }
+      else if (r.status === "in_sync")  { say("Already in sync."); }
+      else if (r.status === "empty")    { say("Nothing to sync yet."); }
+    };
+
+    document.getElementById("cloud-signin")?.addEventListener("click", async () => {
+      const { email, pass } = creds();
+      if (!email || !pass) return say("Enter your account email and password.");
+      say("Signing in…");
+      try {
+        await PasswordnCloud.signIn(email, pass);
+        say("Signed in. Syncing…");
+        afterSync(await PasswordnCloud.syncVault());
+        if (state.unlocked) renderView();
+      } catch (e) {
+        say(/not confirmed/i.test(e.message) ? "Email not confirmed yet — click the link in your inbox first." : `Sign-in failed: ${e.message}`);
+      }
+    });
+    document.getElementById("cloud-signup")?.addEventListener("click", async () => {
+      const { email, pass } = creds();
+      if (!email || !pass) return say("Enter an email and a strong account password.");
+      say("Creating account…");
+      try {
+        const r = await PasswordnCloud.signUp(email, pass);
+        if (r.status === "confirm_email") say("Almost there — confirm via the email we just sent, then sign in.");
+        else { say("Account ready. Syncing…"); afterSync(await PasswordnCloud.syncVault()); if (state.unlocked) renderView(); }
+      } catch (e) { say(`Sign-up failed: ${e.message}`); }
+    });
+    document.getElementById("cloud-sync-now")?.addEventListener("click", async () => {
+      say("Syncing…");
+      try { afterSync(await PasswordnCloud.syncVault()); } catch (e) { say(`Sync failed: ${e.message}`); }
+    });
+    document.getElementById("cloud-signout")?.addEventListener("click", async () => {
+      await PasswordnCloud.signOut();
+      toast("Signed out of cloud sync", "ok");
+      renderView();
+    });
   }
 
   function secBlock(kind, title, items, hint) {
@@ -712,6 +798,7 @@
 
   // ── Bind view events ─────────────────────────────────────────────────────
   function bindViewEvents() {
+    bindCloudEvents();
     // client view
     document.getElementById("add-client-card")?.addEventListener("click", openClientModal);
     document.querySelectorAll("[data-view-client]").forEach(b => {

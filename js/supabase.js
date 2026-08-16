@@ -20,7 +20,7 @@
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || err.error_description || `HTTP ${res.status}`);
+      throw new Error(err.msg || err.message || err.error_description || err.error_code || `HTTP ${res.status}`);
     }
     return res.status === 204 ? null : res.json();
   }
@@ -28,7 +28,13 @@
   // ── Token store (session only — never persists) ──────────────────────────
   let _token = null;
   function getToken() { return _token; }
-  function setToken(t) { _token = t; }
+  function setToken(t) {
+    _token = t;
+    try {
+      if (t) sessionStorage.setItem("passwordn:cloud_token", t);
+      else   sessionStorage.removeItem("passwordn:cloud_token");
+    } catch { /* private mode */ }
+  }
 
   // ── Auth ──────────────────────────────────────────────────────────────────
   async function signUp(email, password) {
@@ -36,8 +42,9 @@
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
-    if (data?.access_token) setToken(data.access_token);
-    return data;
+    if (data?.access_token) { setToken(data.access_token); return { ...data, status: "authed" }; }
+    // Email confirmation required: user exists but no session until the link is clicked
+    return { ...data, status: "confirm_email" };
   }
 
   async function signIn(email, password) {
@@ -66,9 +73,11 @@
   async function pushVault(vaultJson) {
     if (!_token) throw new Error("Not authenticated");
     const user = await getUser();
+    // Store the FULL encrypted vault envelope (auth check + blob + salt) as text.
+    // Everything inside is ciphertext or public KDF params - zero-knowledge holds.
     const payload = {
       user_id: user.id,
-      blob:    vaultJson.blob,
+      blob:    JSON.stringify(vaultJson),
       salt:    vaultJson.salt,
       iters:   vaultJson.iters,
       updated_at: new Date().toISOString(),
@@ -98,33 +107,34 @@
     if (!_token) return { status: "offline" };
     const localRaw = localStorage.getItem("passwordn:vault");
     const local = localRaw ? JSON.parse(localRaw) : null;
-    const remote = await pullVault();
+    const row = await pullVault();
+    let remote = null;
+    if (row?.blob) {
+      try { remote = JSON.parse(row.blob); } catch { remote = null; }
+    }
 
-    if (!local && !remote)  return { status: "empty" };
-    if (!local && remote)  {
-      // First run on this device — pull from cloud
+    if (!local && !remote) return { status: "empty" };
+    if (!local && remote) {
+      // First run on this device — adopt the cloud envelope wholesale
       localStorage.setItem("passwordn:vault", JSON.stringify(remote));
       return { status: "pulled" };
     }
     if (local && !remote) {
-      // First cloud push
       await pushVault(local);
       return { status: "pushed" };
     }
 
-    const localTs  = local.updatedAt  || local.createdAt  || 0;
-    const remoteTs = remote.updated_at ? new Date(remote.updated_at).getTime() : 0;
+    const localTs  = local.updatedAt || local.createdAt || 0;
+    const remoteTs = remote.updatedAt || remote.createdAt || 0;
 
     if (remoteTs > localTs) {
-      // Remote is newer — overwrite local (still encrypted, safe)
-      const merged = { ...local, blob: remote.blob, salt: remote.salt, iters: remote.iters, updatedAt: remoteTs };
-      localStorage.setItem("passwordn:vault", JSON.stringify(merged));
+      localStorage.setItem("passwordn:vault", JSON.stringify(remote));
       return { status: "pulled" };
-    } else {
-      // Local is newer — push to cloud
+    } else if (localTs > remoteTs) {
       await pushVault(local);
       return { status: "pushed" };
     }
+    return { status: "in_sync" };
   }
 
   // ── Public surface ────────────────────────────────────────────────────────
