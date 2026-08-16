@@ -4,8 +4,8 @@
 // The master password never leaves the device.
 
 (function () {
-  const SUPABASE_URL = "https://cgpejrbibkyaaxmunfgs.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_oeNzyg9RV-6_ufTdx8ip8Q_7RFTUYUf";
+  const SUPABASE_URL = "https://xeaeiowwodppqhswotsx.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_ZUrMVOqjW8wClZQrq8D3-w_Y3JW8CwZ";
 
   // ── Low-level Supabase REST helpers ───────────────────────────────────────
   async function sbFetch(path, opts = {}) {

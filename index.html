@@ -152,13 +152,67 @@
   </div>
 </section>
 
+<!-- ENTER THE VAULT — pinned scroll experience -->
+<section id="vault-xp" aria-label="Enter the vault">
+  <div class="vx-stage">
+    <canvas class="vx-canvas" aria-hidden="true"></canvas>
+
+    <!-- Stage 1: cinematic intro copy on the blank screen -->
+    <div class="vx-overlay vx-intro">
+      <span class="eyebrow">Built for agencies</span>
+      <h2 class="h2">One vault for every client you serve.</h2>
+      <p class="lead">From onboarding to automation, Passwordn keeps every credential organized, encrypted, and one click away — no matter which client you're working in.</p>
+      <button type="button" class="btn btn-primary vx-enter" data-enter-vault>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M17 11V7a5 5 0 0 0-10 0v4"/><rect x="4" y="11" width="16" height="10" rx="2"/></svg>
+        Enter the Vault
+      </button>
+      <span class="vx-hint">or keep scrolling</span>
+    </div>
+
+    <!-- Stage 2: vault messaging while the wheel spins -->
+    <div class="vx-overlay vx-unlock">
+      <span class="eyebrow">Zero-knowledge by design</span>
+      <h2 class="h2">Your master key never leaves your device.</h2>
+      <p class="lead">AES-256-GCM encryption, 600k PBKDF2 rounds. The vault opens for you — and no one else. Not even us.</p>
+    </div>
+
+    <!-- Stage 3: inside the vault — cards mapped to the three walls -->
+    <div class="vx-cards" aria-label="Passwordn features">
+      <div class="vx-card vx-left vx-l1">
+        <h3>Client groups</h3>
+        <p>Every credential belongs to a client. Switch contexts instantly without mixing accounts.</p>
+      </div>
+      <div class="vx-card vx-left vx-l2">
+        <h3>Subscription tracker</h3>
+        <p>Every recurring charge across all clients and tools — catch the forgotten ones.</p>
+      </div>
+      <div class="vx-card vx-center vx-c1">
+        <h3>Zero-knowledge vault</h3>
+        <p>AES-256-GCM, client-side. Even we can't read your data.</p>
+      </div>
+      <div class="vx-card vx-center vx-c2">
+        <h3>Service catalog</h3>
+        <p>60+ pre-configured services with login URLs and billing links.</p>
+      </div>
+      <div class="vx-card vx-right vx-r1">
+        <h3>Chrome extension</h3>
+        <p>Autofill any client's stack — no new tabs, no copy-paste.</p>
+      </div>
+      <div class="vx-card vx-right vx-r2">
+        <h3>API &amp; MCP</h3>
+        <p>Hand credentials to n8n workflows and AI agents without exposing plaintext.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FEATURES -->
 <section class="section" id="features">
   <div class="container">
     <div style="display: grid; gap: 14px; max-width: 680px; margin-bottom: 40px;" class="reveal">
-      <span class="eyebrow">Built for agencies</span>
-      <h2 class="h2">One vault for every client you serve.</h2>
-      <p class="lead">From onboarding to automation, Passwordn keeps every credential organized, encrypted, and one click away — no matter which client you're working in.</p>
+      <span class="eyebrow">Everything in its place</span>
+      <h2 class="h2">Six tools. One locked room.</h2>
+      <p class="lead">The vault you just walked through, in detail — organized the way agency work actually happens.</p>
     </div>
 
     <div class="features">
@@ -179,7 +233,7 @@
       </div>
 
       <div class="feature reveal">
-        <div class="ico" style="background:linear-gradient(135deg,color-mix(in oklab,#635bff 14%,transparent),color-mix(in oklab,var(--pur) 10%,transparent));color:#635bff;">
+        <div class="ico" style="background:linear-gradient(135deg,color-mix(in oklab,var(--primary) 14%,transparent),color-mix(in oklab,var(--pur) 10%,transparent));color:var(--primary-l);">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 3a14.5 14.5 0 0 1 0 18M3 12h18"/></svg>
         </div>
         <h3>Chrome extension</h3>
@@ -492,8 +546,10 @@
 <script src="js/ui.js"></script>
 
 <!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/vendor/ScrollToPlugin.min.js"></script>
+<script src="js/vault-xp.js" defer></script>
 
 <script>
 (function() {

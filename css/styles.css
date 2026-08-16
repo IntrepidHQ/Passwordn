@@ -13,7 +13,7 @@
   --red: #EF4444;   --red-dk: #DC2626;   --red-bg: rgba(239,68,68,.12);
   --grn: #22C55E;   --grn-dk: #16A34A;   --grn-bg: rgba(34,197,94,.12);
   --yel: #F59E0B;   --yel-dk: #D97706;   --yel-bg: rgba(245,158,11,.15);
-  --pur: #A855F7;   --pur-dk: #9333EA;
+  --pur: #059669;   --pur-dk: #047857;  /* de-purpled: emerald */
   --r-xs: 6px; --r-sm: 8px; --r: 12px; --r-lg: 16px; --r-xl: 22px; --r-2xl: 28px;
   --ease: cubic-bezier(.22,.68,.2,1);
   --spring: cubic-bezier(.34,1.56,.64,1);
@@ -31,10 +31,10 @@
 
 /* ── Light theme ─────────────────────────────────────────────────────── */
 :root, [data-theme="light"] {
-  --bg:        #F4F6FB; --bg-2: #ECF0F7; --bg-3: #E4EAF5;
-  --surface:   #FFFFFF; --surface-2: #F8FAFD; --surface-3: #F1F4FB;
-  --border:    rgba(30,58,138,.10); --border-2: rgba(30,58,138,.18);
-  --text:      #0A1628; --text-2: #3A4A6B; --text-3: #6C7A98; --muted: #9AA5BC;
+  --bg:        #F2F3F5; --bg-2: #ECEDEF; --bg-3: #E4E6E9;
+  --surface:   #FAFAFB; --surface-2: #F4F5F6; --surface-3: #EEEFF1;
+  --border:    rgba(17,24,39,.10); --border-2: rgba(17,24,39,.18);
+  --text:      #0B0C0E; --text-2: #3F4650; --text-3: #6B7280; --muted: #9CA3AF;
   --primary:   #1E3A8A; --primary-h: #17306F; --primary-l: #3E63BF;
   --on-primary: #FFFFFF;
   --shadow-xs: 0 1px 2px rgba(10,22,40,.06);
@@ -43,11 +43,11 @@
   --shadow-lg: 0 4px 6px rgba(10,22,40,.05), 0 20px 50px rgba(10,22,40,.15);
   --shadow-xl: 0 8px 10px rgba(10,22,40,.05), 0 40px 80px rgba(10,22,40,.22);
   --glow:   radial-gradient(ellipse 100% 60% at 50% -10%, rgba(30,58,138,.14), transparent 65%);
-  --grid-line: rgba(30,58,138,.05);
-  --input-bg: #FFFFFF;
-  --sidebar-bg: #FFFFFF;
-  --sidebar-border: rgba(30,58,138,.10);
-  --card-glass: rgba(255,255,255,.92);
+  --grid-line: rgba(17,24,39,.05);
+  --input-bg: #FCFCFD;
+  --sidebar-bg: #F7F8F9;
+  --sidebar-border: rgba(17,24,39,.10);
+  --card-glass: rgba(250,250,251,.92);
   --overlay: rgba(5,12,30,.6);
   color-scheme: light;
   --accent-gradient: linear-gradient(135deg, #1E3A8A 0%, #059669 100%);
@@ -62,8 +62,8 @@
   --surface:   #0F0F1E;
   --surface-2: #141428;
   --surface-3: #1A1A35;
-  --border:    rgba(110,100,220,.13);
-  --border-2:  rgba(130,120,255,.24);
+  --border:    rgba(90,130,240,.14);
+  --border-2:  rgba(110,150,255,.25);
   --text:      #F0F0FF;
   --text-2:    #9090B8;
   --text-3:    #55557A;
@@ -126,7 +126,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .muted2 { color: var(--text-3); }
 .mono   { font-family: var(--mono); }
 .grad-text {
-  background: linear-gradient(120deg, var(--primary-l) 0%, var(--pur) 60%, #C084FC 100%);
+  background: linear-gradient(120deg, var(--primary-l) 0%, var(--primary) 45%, var(--grn-dk) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
   background-size: 200% auto;
@@ -266,7 +266,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .pill.red    { color: var(--red-dk); background: var(--red-bg); border-color: color-mix(in oklab, var(--red) 22%, transparent); }
 .pill.yellow { color: var(--yel-dk); background: var(--yel-bg); border-color: color-mix(in oklab, var(--yel) 22%, transparent); }
 .pill.navy   { color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, transparent); border-color: color-mix(in oklab, var(--primary) 22%, transparent); }
-.pill.purple { color: var(--pur-dk);  background: rgba(168,85,247,.12); border-color: rgba(168,85,247,.22); }
+.pill.purple { color: var(--pur-dk);  background: rgba(5,150,105,.12); border-color: rgba(168,85,247,.22); }
 .dot { width: 7px; height: 7px; border-radius: 999px; background: currentColor; display: inline-block; flex-shrink: 0; }
 
 /* ── Strength meter ──────────────────────────────────────────────────── */
@@ -1006,3 +1006,97 @@ footer .links a:hover { color:var(--text); }
 
 /* privacy section graphic */
 .prv-graphic { border-radius:16px; overflow:hidden; border:1px solid var(--border); }
+
+/* ── Enter the Vault — pinned scroll experience ──────────────────────── */
+#vault-xp { position: relative; }
+.vx-stage {
+  position: relative;
+  height: 100vh; height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 30%, color-mix(in oklab, var(--primary) 4%, transparent), transparent 70%),
+    var(--bg);
+  display: grid;
+  place-items: center;
+}
+.vx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.vx-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.vx-overlay .h2 { max-width: 660px; }
+.vx-overlay .lead { max-width: 560px; }
+.vx-overlay .vx-enter { pointer-events: auto; margin-top: 6px; display: inline-flex; align-items: center; gap: 8px; }
+.vx-hint { font-size: 12.5px; color: var(--text-3); letter-spacing: .02em; }
+
+/* Interior cards — mapped to the vault's three walls */
+.vx-cards {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  perspective: 1100px;
+  perspective-origin: 50% 46%;
+}
+.vx-card {
+  position: absolute;
+  width: clamp(180px, 22vw, 280px);
+  padding: 18px 20px;
+  border-radius: var(--r-lg);
+  background: var(--card-glass);
+  border: 1px solid var(--border-2);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  will-change: opacity, transform;
+}
+.vx-card h3 { font-family: var(--font-heading); font-size: 17px; margin: 0 0 6px; color: var(--text); }
+.vx-card p  { font-size: 13.5px; line-height: 1.5; color: var(--text-2); margin: 0; }
+
+/* left wall — rotated into the scene like the deposit-box wall */
+.vx-left  { left: 3vw;  transform: rotateY(38deg); transform-origin: left center; }
+.vx-l1 { top: 22vh; }
+.vx-l2 { top: 56vh; }
+/* right wall */
+.vx-right { right: 3vw; transform: rotateY(-38deg); transform-origin: right center; }
+.vx-r1 { top: 22vh; }
+.vx-r2 { top: 56vh; }
+/* center / back wall */
+.vx-center { left: 50%; transform: translateX(-50%); }
+.vx-c1 { top: 16vh; }
+.vx-c2 { top: 64vh; }
+
+@media (max-width: 719px) {
+  .vx-card { width: clamp(150px, 44vw, 220px); padding: 14px 15px; }
+  .vx-card h3 { font-size: 15px; }
+  .vx-card p { font-size: 12px; }
+  .vx-left  { left: 2vw;  transform: rotateY(30deg); }
+  .vx-right { right: 2vw; transform: rotateY(-30deg); }
+  .vx-l1, .vx-r1 { top: 14vh; }
+  .vx-l2, .vx-r2 { top: 66vh; }
+  .vx-c1 { top: 38vh; }
+  .vx-c2 { display: none; }
+}
+
+/* Static mode (?vault=view / reduced motion): single screenful, no pin */
+.vx-static .vx-stage { position: relative; }
+.vx-static .vx-cards .vx-card { transition: none; }
+
+/* soft veil behind vault overlay copy so text stays readable over particles */
+.vx-intro, .vx-unlock {
+  background: radial-gradient(ellipse 44% 36% at 50% 50%,
+    color-mix(in oklab, var(--bg) 86%, transparent) 0%,
+    color-mix(in oklab, var(--bg) 55%, transparent) 55%,
+    transparent 75%);
+}

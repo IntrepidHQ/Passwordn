@@ -25,20 +25,18 @@
 
   function init() {
     const saved = localStorage.getItem(KEY);
-    apply(saved || (mq.matches ? "dark" : "light"));
+    apply(saved || "light"); // light is the default brand experience
   }
 
   // Apply immediately to prevent flash
   const saved = localStorage.getItem(KEY);
-  apply(saved || (mq.matches ? "dark" : "light"));
+  apply(saved || "light");
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 
-  // Respond to system preference changes when no saved preference
-  mq.addEventListener("change", (e) => {
-    if (!localStorage.getItem(KEY)) apply(e.matches ? "dark" : "light");
-  });
+  // System preference no longer overrides the light default;
+  // users can still switch via the toggle (persisted).
 
   window.getTheme = current;
   window.setTheme = (t) => { apply(t); localStorage.setItem(KEY, t); };
